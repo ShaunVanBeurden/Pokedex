@@ -43,7 +43,7 @@ export class PokedexPage {
       .subscribe(result => {
         this.pokemons = [];
         for (var i = 0; i < 802; i++) {
-          if (result['results'][i]['name'].indexOf(SearchedItem.target.value) >= 0) {
+          if (result['results'][i]['name'].indexOf(SearchedItem.target.value.toLowerCase()) >= 0) {
             this.pokemons.push(result['results'][i]['name']);
           }
         }
