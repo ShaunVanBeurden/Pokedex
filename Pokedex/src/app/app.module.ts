@@ -2,10 +2,12 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+import { HttpClientModule  } from "@angular/common/http";
 
 import { PokedexPage } from '../pages/pokedex/pokedex';
 import { MapPage } from '../pages/map/map';
 import { TabsPage } from '../pages/tabs/tabs';
+import { DetailsPage } from '../pages/details/details';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -16,10 +18,12 @@ import { PokedexproviderProvider } from '../providers/pokedexprovider/pokedexpro
     MyApp,
     PokedexPage,
     MapPage,
-    TabsPage
+    TabsPage,
+    DetailsPage
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -27,7 +31,8 @@ import { PokedexproviderProvider } from '../providers/pokedexprovider/pokedexpro
     MyApp,
     PokedexPage,
     MapPage,
-    TabsPage
+    TabsPage,
+    DetailsPage
   ],
   providers: [
     StatusBar,
