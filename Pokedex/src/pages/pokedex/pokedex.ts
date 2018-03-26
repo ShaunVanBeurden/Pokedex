@@ -17,10 +17,9 @@ import {DetailsPage} from "../details/details";
 })
 export class PokedexPage {
 
-  private selectedItem: any;
-  private icons: string[];
+  public selectedItem: any;
+  public icons: string[];
   private pokemons = [];
-  private data : string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public pokedexprovider : PokedexproviderProvider) {
     // If we navigated to this page, we will have an item available as a nav param

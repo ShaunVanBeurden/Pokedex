@@ -17,11 +17,11 @@ import {PokedexproviderProvider} from "../../providers/pokedexprovider/pokedexpr
 export class DetailsPage {
 
   private pokemonName : string;
-  private height: number
-  private weight: number
+  public height: number
+  public weight: number
   private abilities: Array<{name: string}>;
   private stats: Array<{name: string, base_stat: number}>;
-  private sprite: string
+  public sprite: string
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public pokedexprovider : PokedexproviderProvider) {
     this.pokemonName = navParams.get('name');
@@ -39,13 +39,13 @@ export class DetailsPage {
             name: result['abilities'][i]['ability']['name'],
           });
         }
-        for (var i = 0; i < result['stats'].length; i++) {
+        for (var j = 0; j < result['stats'].length; j++) {
           this.stats.push({
             name: result['stats'][i]['stat']['name'],
-            base_stat: result['stats'][i]['base_stat'],
+            base_stat: result['stats'][i]['base_stat']
           });
-          this.sprite = result['sprites']['front_default'];
         }
+        this.sprite = result['sprites']['front_default'];
       });
   }
 }
