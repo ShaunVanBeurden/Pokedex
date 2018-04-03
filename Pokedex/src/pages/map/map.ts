@@ -36,49 +36,50 @@ export class MapPage {
     this.loadMap();
   }
 
+  // Laadt de map
   loadMap() {
 
     this.geolocation.getCurrentPosition().then((resp) => {
 
       let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
-
       let mapOptions = {
         center: latLng,
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-      let infoWindow = new google.maps.InfoWindow();
 
+      // Voor elke locatie gaan we een marker toevoegen
       for (let location in this.locations) {
 
+        // We halen een random getal op tussen de 0 en 803 om een pokemon te randomizen
         this.randomPokemon = Math.floor((Math.random() * 803) + 1);
         this.pokedexprovider.pokemon = this.randomPokemon;
 
-        // Add a marker
+
         let getPokemonReq = this.pokedexprovider.getPokemonDetails();
         let getPokemonSub = getPokemonReq.subscribe(result => {
-
-            var marker = new google.maps.Marker({
-              position: new google.maps.LatLng(this.locations[location][0], this.locations[location][1]),
-              title: "Hello World!",
-              visible: true,
-              icon: result['sprites']['front_default']
-            });
-            marker.setMap(this.map);
-            google.maps.event.addListener(marker, 'click', (function (marker, location) {
-              return function () {
-                //if else functie om te kijken of je dichtbij genoeg staat bij een pokemon
-                if (this.getDistanceFromLatLonInKm(resp.coords.latitude, resp.coords.longitude, this.locations[location][0], this.locations[location][1]) > 5.50) {
-                  alert('Je bent niet dichtbij genoeg!')
-                } else {
-                  let profileModal = this.modalCtrl.create('CapturePage', { name: result['name'], sprite: result['sprites']['front_default'] });
-                  profileModal.present();
-                }
+          // Marker toevoegen met attributen
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(this.locations[location][0], this.locations[location][1]),
+            title: result['name'],
+            visible: true,
+            icon: result['sprites']['front_default']
+          });
+          marker.setMap(this.map);
+          // We voegen een listener toe zodat we een actie krijgen als we op een marker klikken
+          google.maps.event.addListener(marker, 'click', (function (marker, location) {
+            return function () {
+              //if else om te kijken of je dichtbij genoeg staat bij een pokemon
+              if (this.getDistanceFromLatLonInKm(resp.coords.latitude, resp.coords.longitude, this.locations[location][0], this.locations[location][1]) > 5.50) {
+                alert('Je bent niet dichtbij genoeg!')
+              } else {
+                // We openen een modal scherm
+                let profileModal = this.modalCtrl.create('CapturePage', { name: result['name'], sprite: result['sprites']['front_default'] });
+                profileModal.present();
               }
-            })(marker, location).bind(this));
-
+            }
+          })(marker, location).bind(this));
         }, () => {
           getPokemonSub.unsubscribe()
         });

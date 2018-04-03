@@ -18,44 +18,53 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 export class CapturePage {
 
   private name: any;
-  private sprite: any;
+  public sprite: any;
   private randomCatchRate;
   private caughtPokemon = [];
-  private base64Image: string;
-  private unhideCamera = false;
-  private hideCatchButton = false;
+  public base64Image: string;
+  public unhideCamera = false;
+  public hideCatchButton = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private camera: Camera) {
     this.name = navParams.get('name');
     this.sprite = navParams.get('sprite');
 
+    // We halen alle gevangen pokemon op en stoppen die in een array
     this.storage.get('Caught').then((output) => {
       for (var i = 0; i < output.size; i++) {
         this.caughtPokemon.push(output[i]);
         console.log(output[i]);
       }
-      //console.log(output);
     });
   }
 
+  // Functie voor het vangen van een pokemon
   catchPokemon() {
+    // De kans van het vangen is 50/50
     this.randomCatchRate = Math.floor((Math.random() * 2) + 1);
-      if (this.randomCatchRate == 1) {
-        var index = this.caughtPokemon.indexOf(this.name);
-        if (index > -1) {
-          alert('This pokemon has already been caught!')
-        } else {
-          this.caughtPokemon.push(this.name);
-          this.storage.set('Caught', this.caughtPokemon);
-          alert('You have caught: ' + this.caughtPokemon + '!');
-          this.unhideCamera = true;
-        }
-      } else {
-        alert('Pokemon ' + this.name + ' has not been caught!');
+    // Succesvol gevangen
+    if (this.randomCatchRate == 1) {
+      // We checken of de pokemon al gevangen is
+      var index = this.caughtPokemon.indexOf(this.name);
+      if (index > -1) {
+        alert('This pokemon has already been caught!')
       }
+      // Als de pokemon nog niet gevangen is dan voegen we die toe aan de storage
+      else {
+        this.caughtPokemon.push(this.name);
+        this.storage.set('Caught', this.caughtPokemon);
+        alert('You have caught: ' + this.caughtPokemon + '!');
+        this.unhideCamera = true;
+      }
+    }
+    // Niet gevangen
+    else {
+      alert('Pokemon ' + this.name + ' has not been caught!');
+    }
     this.hideCatchButton = true;
   }
 
+  // Functie voor het nemen van een foto
   takePhoto() {
     this.camera.getPicture({
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -64,6 +73,7 @@ export class CapturePage {
     }).then((imageData) => {
       // imageData is a base64 encoded string
       this.base64Image = "data:image/jpeg;base64," + imageData;
+      this.storage.set(this.name, this.base64Image);
     }, (err) => {
       console.log(err);
     });

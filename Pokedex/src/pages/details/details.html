@@ -18,4 +18,6 @@
   <p *ngFor="let stat of stats">
     {{ stat.name }} : {{ stat.base_stat }}
   </p>
+  <p><b>Photo of capture location: </b></p>
+  <img [src]="base64Image" *ngIf="base64Image" />
 </ion-content>

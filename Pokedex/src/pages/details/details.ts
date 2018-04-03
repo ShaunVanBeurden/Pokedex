@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {PokedexproviderProvider} from "../../providers/pokedexprovider/pokedexprovider";
+import {Storage} from "@ionic/storage";
 
 /**
  * Generated class for the DetailsPage page.
@@ -21,15 +22,16 @@ export class DetailsPage {
   public weight: number
   private abilities: Array<{name: string}>;
   private stats: Array<{name: string, base_stat: number}>;
+  public base64Image: string;
   public sprite: string
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public pokedexprovider : PokedexproviderProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public pokedexprovider : PokedexproviderProvider, private storage: Storage) {
     this.pokemonName = navParams.get('name');
     pokedexprovider.pokemon = this.pokemonName;
 
+    // We halen een aantal details op van de aangeklikte pokemon
     pokedexprovider.getPokemonDetails()
       .subscribe(result => {
-        console.log(result['sprites']['front_default']);
         this.height = result['height'];
         this.weight = result['weight'];
         this.abilities = [];
@@ -46,6 +48,9 @@ export class DetailsPage {
           });
         }
         this.sprite = result['sprites']['front_default'];
+        this.storage.get(this.pokemonName).then((output) => {
+          this.base64Image = output;
+        });
       });
   }
 }
