@@ -15,6 +15,8 @@ import { PokedexproviderProvider } from '../providers/pokedexprovider/pokedexpro
 
 import { GoogleMaps } from "@ionic-native/google-maps";
 import { Geolocation } from '@ionic-native/geolocation';
+import {IonicStorageModule} from "@ionic/storage";
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { Geolocation } from '@ionic-native/geolocation';
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -42,6 +45,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     SplashScreen,
     Geolocation,
     GoogleMaps,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PokedexproviderProvider
   ]

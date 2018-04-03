@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {PokedexproviderProvider} from "../../providers/pokedexprovider/pokedexprovider";
 import {DetailsPage} from "../details/details";
+import { Storage } from '@ionic/storage';
+import {letProto} from "rxjs/operator/let";
 
 /**
  * Generated class for the PokedexPage page.
@@ -18,16 +20,13 @@ import {DetailsPage} from "../details/details";
 export class PokedexPage {
 
   public selectedItem: any;
-  public icons: string[];
   private pokemons = [];
+  private filters = [];
+  private filter: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public pokedexprovider : PokedexproviderProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public pokedexprovider : PokedexproviderProvider) {
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('pokemon');
-
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-      'american-football', 'boat', 'bluetooth', 'build'];
 
     pokedexprovider.getPokemons()
       .subscribe(result => {
@@ -35,13 +34,15 @@ export class PokedexPage {
           this.pokemons.push(result['results'][i]['name']);
         }
       });
+
+    this.filters.push("All", "Caught", "Uncaught");
   }
 
   onInput(SearchedItem: any) {
     this.pokedexprovider.getPokemons()
       .subscribe(result => {
         this.pokemons = [];
-        for (var i = 0; i < 802; i++) {
+        for (var i = 0; i < 50; i++) {
           if (result['results'][i]['name'].indexOf(SearchedItem.target.value.toLowerCase()) >= 0) {
             this.pokemons.push(result['results'][i]['name']);
           }
@@ -80,4 +81,39 @@ export class PokedexPage {
     });
   }
 
+  filterPokemon() {
+    if (this.filter == "Caught") {
+      this.pokemons = [];
+      this.pokedexprovider.getPokemons()
+        .subscribe(result => {
+          this.storage.get(this.filter).then((output) => {
+            for (var i = 0; i < output.length; i++) {
+              console.log(output[i]);
+              for (var j = 0; j < 802; j++) {
+                if (result['results'][j]['name'] == output[i]) {
+                  this.pokemons.push(result['results'][j]['name']);
+                }
+              }
+            }
+          });
+        });
+    }
+    else if (this.filter == "Uncaught") {
+      this.pokemons = [];
+      this.pokedexprovider.getPokemons()
+        .subscribe(result => {
+          for (var i = 0; i < 802; i++) {
+            this.pokemons.push(result['results'][i]['name']);
+          }
+          this.storage.get("Caught").then((output) => {
+            for (var i = 0; i < output.length; i++) {
+              var index = this.pokemons.indexOf(output[i]);
+              if (index > -1) {
+                this.pokemons.splice(index, i);
+              }
+            }
+          });
+        });
+    }
+  }
 }

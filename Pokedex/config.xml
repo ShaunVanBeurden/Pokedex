@@ -85,6 +85,8 @@
         <variable name="API_KEY_FOR_ANDROID" value="YOUR_ANDROID_API_KEY_IS_HERE" />
         <variable name="API_KEY_FOR_IOS" value="YOUR_IOS_API_KEY_IS_HERE" />
     </plugin>
+    <plugin name="cordova-sqlite-storage" spec="^2.3.0" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.2" />
     <engine name="android" spec="7.0.0" />
     <engine name="browser" spec="5.0.3" />
 </widget>

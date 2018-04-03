@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
+import {interpolate} from "@angular/core/src/view";
 
 /*
   Generated class for the PokedexproviderProvider provider.
@@ -24,5 +25,4 @@ export class PokedexproviderProvider {
   public getPokemonDetails(): Observable<any[]> {
     return this.http.get<any[]>('https://pokeapi.co/api/v2/pokemon/' + this.pokemon);
   }
-
 }

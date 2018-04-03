@@ -9,12 +9,15 @@
 
 <ion-content padding>
   <ion-searchbar
-    [(ngModel)]="searchPokemon"
-    [showCancelButton]="shouldShowCancel"
     (ionInput)="onInput($event)"
-    (ionCancel)="onCancel($event)"
     placeholder="Search Pokémon">
   </ion-searchbar>
+  <ion-item col-lg-3>
+    <ion-label>Sort by</ion-label>
+    <ion-select [(ngModel)]="filter" (ionChange)="filterPokemon()">
+      <ion-option *ngFor="let filter of filters">{{filter}}</ion-option>
+    </ion-select>
+  </ion-item>
   <ion-list>
     <button ion-item *ngFor="let pokemon of pokemons" (click)="itemTapped($event, pokemon)" align-items-center="center">
       {{pokemon}}
