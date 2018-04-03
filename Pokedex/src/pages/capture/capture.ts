@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 
 /**
  * Generated class for the CapturePage page.
@@ -31,11 +31,11 @@ export class CapturePage {
 
     // We halen alle gevangen pokemon op en stoppen die in een array
     this.storage.get('Caught').then((output) => {
-      for (var i = 0; i < output.size; i++) {
-        this.caughtPokemon.push(output[i]);
-
+      if (output != null) {
+        for (var i = 0; i < output.length; i++) {
+          this.caughtPokemon.push(output[i]);
+        }
       }
-      console.log(output);
     });
   }
 
@@ -54,7 +54,7 @@ export class CapturePage {
       else {
         this.caughtPokemon.push(this.name);
         this.storage.set('Caught', this.caughtPokemon);
-        alert('You have caught: ' + this.caughtPokemon + '!');
+        alert('You have caught: ' + this.name + '!');
         this.unhideCamera = true;
       }
     }

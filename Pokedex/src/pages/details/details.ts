@@ -18,8 +18,8 @@ import {Storage} from "@ionic/storage";
 export class DetailsPage {
 
   private pokemonName : string;
-  public height: number
-  public weight: number
+  public height: any;
+  public weight: any;
   private abilities: Array<{name: string}>;
   private stats: Array<{name: string, base_stat: number}>;
   public base64Image: string;
@@ -32,24 +32,32 @@ export class DetailsPage {
     // We halen een aantal details op van de aangeklikte pokemon
     pokedexprovider.getPokemonDetails()
       .subscribe(result => {
-        this.height = result['height'];
-        this.weight = result['weight'];
-        this.abilities = [];
-        this.stats = [];
-        for (var i = 0; i < result['abilities'].length; i++) {
-          this.abilities.push({
-            name: result['abilities'][i]['ability']['name'],
-          });
-        }
-        for (var j = 0; j < result['stats'].length; j++) {
-          this.stats.push({
-            name: result['stats'][j]['stat']['name'],
-            base_stat: result['stats'][j]['base_stat']
-          });
-        }
-        this.sprite = result['sprites']['front_default'];
-        this.storage.get(this.pokemonName).then((output) => {
-          this.base64Image = output;
+        this.storage.get('Caught').then((output) => {
+          if (output != null) {
+            for (var i = 0; i < output.length; i++) {
+              if (output[i] == this.pokemonName) {
+                this.height = result['height'];
+                this.weight = result['weight'];
+                this.abilities = [];
+                this.stats = [];
+                for (var i = 0; i < result['abilities'].length; i++) {
+                  this.abilities.push({
+                    name: result['abilities'][i]['ability']['name'],
+                  });
+                }
+                for (var j = 0; j < result['stats'].length; j++) {
+                  this.stats.push({
+                    name: result['stats'][j]['stat']['name'],
+                    base_stat: result['stats'][j]['base_stat']
+                  });
+                }
+                this.sprite = result['sprites']['front_default'];
+                this.storage.get(this.pokemonName).then((output) => {
+                  this.base64Image = output;
+                });
+              }
+            }
+          }
         });
       });
   }

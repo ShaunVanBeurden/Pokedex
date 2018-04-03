@@ -21,6 +21,7 @@ export class PokedexPage {
   public selectedItem: any;
   private pokemons = [];
   private filters = [];
+  private test = [];
   private filter: string;
   private amount: number;
 
@@ -28,6 +29,9 @@ export class PokedexPage {
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('pokemon');
     this.filters.push("All", "Caught", "Uncaught");
+
+    this.test.push('pikachu', 'squirtle', 'muk');
+    storage.set('Caught', this.test);
 
     this.allPokemon();
   }
@@ -47,6 +51,7 @@ export class PokedexPage {
     this.pokedexprovider.getPokemons()
       .subscribe(result => {
         this.pokemons = [];
+        // We checken of
         if (SearchedItem.target.value == "") {
           this.amount = 50;
         } else {
@@ -122,7 +127,8 @@ export class PokedexPage {
               for (var j = 0; j < output.length; j++) {
                 var index = this.pokemons.indexOf(output[j]);
                 if (index > -1) {
-                  this.pokemons.splice(index, j);
+                  this.pokemons.splice(index, 1);
+                  console.log(this.pokemons);
                   console.log(output[j]);
                 }
               }
