@@ -128,14 +128,11 @@ export class PokedexPage {
                 var index = this.pokemons.indexOf(output[j]);
                 if (index > -1) {
                   this.pokemons.splice(index, 1);
-                  console.log(this.pokemons);
-                  console.log(output[j]);
                 }
               }
             }
           });
         });
-      console.log(this.pokemons);
     }
     // Filteren op alle pokemon
     else if (this.filter == "All") {

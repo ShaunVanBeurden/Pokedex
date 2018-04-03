@@ -51,7 +51,7 @@ export class MapPage {
 
       new google.maps.Marker({
         map: this.map,
-        icon: new google.maps.MarkerImage('https://cmxpv89733.i.lithium.com/t5/image/serverpage/image-id/165436i36DCE8AF5DF64A5A/image-size/large?v=1.0&px=999',
+        icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
           new google.maps.Size(33, 33),
           new google.maps.Point(0, 18),
           new google.maps.Point(11, 11)),
@@ -80,7 +80,7 @@ export class MapPage {
           google.maps.event.addListener(marker, 'click', (function (marker, location) {
             return function () {
               //if else om te kijken of je dichtbij genoeg staat bij een pokemon
-              if (this.getDistanceFromLatLonInKm(resp.coords.latitude, resp.coords.longitude, this.locations[location][0], this.locations[location][1]) > 5.50) {
+              if (this.getDistanceFromLatLonInKm(resp.coords.latitude, resp.coords.longitude, this.locations[location][0], this.locations[location][1]) > 1) {
                 alert('Je bent niet dichtbij genoeg!')
               } else {
                 // We openen een modal scherm
