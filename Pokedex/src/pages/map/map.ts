@@ -39,7 +39,7 @@ export class MapPage {
   // Laadt de map
   loadMap() {
 
-    this.geolocation.getCurrentPosition().then((resp) => {
+    this.geolocation.watchPosition().subscribe((resp) => {
 
       let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
       let mapOptions = {
@@ -48,6 +48,15 @@ export class MapPage {
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+
+      new google.maps.Marker({
+        map: this.map,
+        icon: new google.maps.MarkerImage('https://cmxpv89733.i.lithium.com/t5/image/serverpage/image-id/165436i36DCE8AF5DF64A5A/image-size/large?v=1.0&px=999',
+          new google.maps.Size(33, 33),
+          new google.maps.Point(0, 18),
+          new google.maps.Point(11, 11)),
+        position: latLng
+      });
 
       // Voor elke locatie gaan we een marker toevoegen
       for (let location in this.locations) {
@@ -84,10 +93,11 @@ export class MapPage {
           getPokemonSub.unsubscribe()
         });
       }
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
+    }, ((err) => {
+      console.log('Error getting location', err);
+    }));
   }
+
 
   // Afstand in km berekenen met coordinaten volgens de Haversine formula
   getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {

@@ -43,8 +43,8 @@ export class DetailsPage {
         }
         for (var j = 0; j < result['stats'].length; j++) {
           this.stats.push({
-            name: result['stats'][i]['stat']['name'],
-            base_stat: result['stats'][i]['base_stat']
+            name: result['stats'][j]['stat']['name'],
+            base_stat: result['stats'][j]['base_stat']
           });
         }
         this.sprite = result['sprites']['front_default'];

@@ -33,8 +33,9 @@ export class CapturePage {
     this.storage.get('Caught').then((output) => {
       for (var i = 0; i < output.size; i++) {
         this.caughtPokemon.push(output[i]);
-        console.log(output[i]);
+
       }
+      console.log(output);
     });
   }
 
